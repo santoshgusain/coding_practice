@@ -1,0 +1,25 @@
+image: node:16  # Choose the appropriate Node.js version for your application
+
+pipelines:
+  default:
+        # Use the SSH pipe to execute deployment commands on the EC2 instance
+        - step:
+            name: Pull updated code
+            deployment: production
+            services:
+              - docker
+            script:
+              - pipe: atlassian/ssh-run:0.2.8
+                variables:
+                  SSH_USER: ubuntu
+                  SERVER: 54.146.213.138
+                  PRIVATE_KEY: $UNS_SSH_KEY
+                  DEBUG: "true"
+                  COMMAND: "whoami; whereis node; cd ~/fingertip-dev; git pull origin main"
+              - pipe: atlassian/ssh-run:0.2.8
+                variables:
+                  SSH_USER: ubuntu
+                  SERVER: 54.146.213.138
+                  PRIVATE_KEY: $UNS_SSH_KEY
+                  DEBUG: "true"
+                  COMMAND: "cd ~/fingertip-dev && npm i && pm2 restart fingertip"

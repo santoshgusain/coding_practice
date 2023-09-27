@@ -1,0 +1,8 @@
+node_modules
+test*
+info
+database.*
+db.*
+db
+test*
+build
