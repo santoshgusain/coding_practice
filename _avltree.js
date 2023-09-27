@@ -40,16 +40,19 @@ class AvlTree {
     let N = x.right;
     node.left = N;
     x.right = node;
+
+    this.updateHeight(node);
+    this.updateHeight(x);
     return x;
   }
 
   rightRotation(node) {
-    console.log(node,'>>>>>>>>>>>>>>>>>>>>>>>>');
     let x = node.right;
     let N = x.left;
     node.right = N;
     x.left = node;
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
+    this.updateHeight(node);
+    this.updateHeight(x);
     return x;
   }
 
@@ -71,7 +74,6 @@ class AvlTree {
 
     this.updateHeight(root);
     let balance = this.getBalanceFactor(root);
-    console.log(balance, "-------------------");
 
     if (balance < -1 && root.right.key < key) {
       return this.rightRotation(root);
@@ -83,7 +85,6 @@ class AvlTree {
       // lr rotation
     }
     if (balance > 1 && root.left.key < key) {
-      console.log(balance,root,'=======================balance----');
       root.left = this.rightRotation(root.left);
       return this.leftRotation(root);
       // rl rotation
@@ -112,7 +113,7 @@ class AvlTree {
     }
 
     return {
-      [root.key]: {
+      [`${root.key}/${root.height}`]: {
         left: this.convertToNestedObject(root.left),
         right: this.convertToNestedObject(root.right),
       },
@@ -136,5 +137,8 @@ tree.insertKey(91);
 tree.insertKey(91);
 tree.insertKey(11);
 tree.insertKey(32);
+tree.insertKey(33);
+tree.insertKey(89);
+tree.insertKey(70);
 // tree.print();
 tree.printWithTreeify();
